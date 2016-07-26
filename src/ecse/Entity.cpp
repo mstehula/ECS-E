@@ -17,8 +17,6 @@ namespace ecse
    */
   Entity EntityManager::Create()
   {
-    printf("Entity_Version_ vector: %p\n", entity_version_);
-
     uint32_t index, version;
     if(free_list_.empty())
     {
