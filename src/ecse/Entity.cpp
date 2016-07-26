@@ -1,3 +1,6 @@
+
+#include <cstdio>
+
 #include "ecse/Entity.hpp"
 
 namespace ecse
@@ -14,17 +17,19 @@ namespace ecse
    */
   Entity EntityManager::Create()
   {
+    printf("Entity_Version_ vector: %p\n", entity_version_);
+
     uint32_t index, version;
     if(free_list_.empty())
     {
-      index = index_counter_++;
-      version = entity_version_[index] = 1;
+      version = 1;
+      entity_version_.push_back(version);
     }
     else
     {
       index = free_list_.back();
       free_list_.pop_back();
-      version = entity_version_[index];
+      version = entity_version_.at(index);
     }
     Entity entity(this, Entity::Id(index, version));
     return entity;

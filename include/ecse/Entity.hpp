@@ -162,12 +162,6 @@ namespace ecse
    private:
 
     /*
-     * Holds the number of indices currently in use. Only has the ability to go
-     * up, not down.
-     */
-    uint32_t index_counter_ = 0;
-
-    /*
      * Vector of Entity versions for each Entity. Increases on Entity
      *   destruction, rolls over when it hits the max version number. Versions
      *   are what we determine when we are asking if an Entity is "valid"
