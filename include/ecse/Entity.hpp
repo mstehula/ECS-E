@@ -71,6 +71,11 @@ namespace ecse
      */
     static const Id INVALID;
 
+    inline Id GetId()
+    {
+      return id_;
+    }
+
     /*
      * Base constructor, defaulted
      * Implicit constructor, builds from an EntityManager pointer and an Id
