@@ -140,7 +140,7 @@ namespace ecse
      * Args: the Entity Id of the Entity to check
      * Return: boolean weather the Entity is valid
      */
-    bool Valid(Entity::Id id);
+    bool Validate(Entity::Id id);
 
     /*
      * Destroy()

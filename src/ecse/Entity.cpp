@@ -44,7 +44,7 @@ namespace ecse
    * Args: Entity Id of the Entity to validate
    * Return: Boolean weather it is valid or not
    */
-  bool EntityManager::Valid(Entity::Id id)
+  bool EntityManager::Validate(Entity::Id id)
   {
     return id.Index() < entity_version_.size() && entity_version_[id.Index()] == id.Version();
   }
