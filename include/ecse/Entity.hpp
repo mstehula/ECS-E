@@ -167,6 +167,12 @@ namespace ecse
    private:
 
     /*
+     * Index for which is the next index to add when there are no places in the
+     *   free list
+     */
+    uint32_t index_counter_ = 0;
+
+    /*
      * Vector of Entity versions for each Entity. Increases on Entity
      *   destruction, rolls over when it hits the max version number. Versions
      *   are what we determine when we are asking if an Entity is "valid"

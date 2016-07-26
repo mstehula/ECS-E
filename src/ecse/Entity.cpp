@@ -20,6 +20,7 @@ namespace ecse
     uint32_t index, version;
     if(free_list_.empty())
     {
+      index = index_counter_++;
       version = 1;
       entity_version_.push_back(version);
     }
