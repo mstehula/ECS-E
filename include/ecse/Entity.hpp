@@ -23,7 +23,7 @@ namespace ecse
   class Entity
   {
   public:
-    struct Id
+    struct Identifier
     {
     public:
 
@@ -32,16 +32,16 @@ namespace ecse
        * Explicit constructor, constructs Entity with Id = id
        * Implicit constructor, constructs Entity with Id = index | version << 32
        */
-      Id() : id_(0) {}
-      explicit Id(uint64_t id) : id_(id) {}
-      Id(uint32_t index, uint32_t version) : id_(uint64_t(index) | uint64_t(version) << 32UL) {}
+      Identifier() : id_(0) {}
+      explicit Identifier(uint64_t id) : id_(id) {}
+      Identifier(uint32_t index, uint32_t version) : id_(uint64_t(index) | uint64_t(version) << 32UL) {}
 
       /*
        * Returns full 64 bit Id
        * Returns first 32 bits of the Id
        * Returns last 32 bist of the Id, shifted
        */
-      uint64_t Get() const { return id_; }
+      uint64_t ID() const { return id_; }
       uint32_t Index() const { return id_ & 0xffffffffUL; }
       uint32_t Version() const { return id_ >> 32; }
 
@@ -49,8 +49,8 @@ namespace ecse
        * Compares the Id for boolean operations
        * Compares the Id for boolean operations
        */
-      bool operator == (const Id &other) const { return id_ == other.id_; }
-      bool operator != (const Id &other) const { return id_ != other.id_; }
+      bool operator == (const Identifier &other) const { return id_ == other.id_; }
+      bool operator != (const Identifier &other) const { return id_ != other.id_; }
 
     private:
 
@@ -69,9 +69,9 @@ namespace ecse
     /*
      * Constant value for the Id to be when it is INVAILD
      */
-    static const Id INVALID;
+    static const Identifier INVALID;
 
-    inline Id GetId()
+    inline Identifier ID()
     {
       return id_;
     }
@@ -83,7 +83,7 @@ namespace ecse
      * Implicit constructor, copy constructor
      */
     Entity() = default;
-    Entity(EntityManager *manager, Entity::Id id) : manager_(manager), id_(id) {}
+    Entity(EntityManager *manager, Entity::Identifier id) : manager_(manager), id_(id) {}
     Entity(const Entity &other) = default;
     Entity &operator = (const Entity &other) = default;
 
@@ -114,7 +114,7 @@ namespace ecse
     /*
      * The current Id of the Entity
      */
-    Entity::Id id_ = INVALID;
+    Entity::Identifier id_ = INVALID;
   };
 
   /*
@@ -145,19 +145,19 @@ namespace ecse
      * Args: the Entity Id of the Entity to check
      * Return: boolean weather the Entity is valid
      */
-    bool Validate(Entity::Id id);
+    bool Validate(Entity::Identifier id);
 
     /*
      * Destroy()
      * Args: the Entity Id of which to destroy
      * Return: None
      */
-    void Destroy(Entity::Id);
+    void Destroy(Entity::Identifier);
 
     /*
      * Inline funtion to assert we are not using a stale Entity ID
      */
-     inline void assert_valid(Entity::Id id) const
+     inline void assert_valid(Entity::Identifier id) const
      {
        assert(id.Index() < entity_version_.size() && "Entity::Id outside entity range");
        assert(entity_version_[id.Index()] == id.Version() && "Attempted to access stale Entity");

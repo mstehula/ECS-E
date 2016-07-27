@@ -30,7 +30,7 @@ namespace ecse
       free_list_.pop_back();
       version = entity_version_.at(index);
     }
-    Entity entity(this, Entity::Id(index, version));
+    Entity entity(this, Entity::Identifier(index, version));
     return entity;
   }
 
@@ -43,7 +43,7 @@ namespace ecse
    * Args: Entity Id of the Entity to validate
    * Return: Boolean weather it is valid or not
    */
-  bool EntityManager::Validate(Entity::Id id)
+  bool EntityManager::Validate(Entity::Identifier id)
   {
     return id.Index() < entity_version_.size() && entity_version_[id.Index()] == id.Version();
   }
@@ -51,10 +51,10 @@ namespace ecse
   /*
    * Deletes the Entity provided
    *
-   * Args: Entity Id of the Entity to be destroyed.
+   * Args: Entity Identifier of the Entity to be destroyed.
    * Return: None
    */
-  void EntityManager::Destroy(Entity::Id id)
+  void EntityManager::Destroy(Entity::Identifier id)
   {
     assert_valid(id);
     uint32_t index = id.Index();
