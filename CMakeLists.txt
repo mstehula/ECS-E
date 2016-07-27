@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 2.8)
+
+project(ECS-E)
+
+set(PROJECT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
+set(PROJECT_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
+set(PROJECT_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
+set(PROJECT_LIBRARY_DIR ${CMAKE_SOURCE_DIR}/lib)
+set(PROJECT_OBJECT_DIR ${CMAKE_SOURCE_DIR}/builds)
+set(PROJECT_TESTING_DIR ${CMAKE_SOURCE_DIR}/testing)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_LIBRARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_LIBRARY_DIR})
+
+
+add_definitions(-g)
+
+set(PROJECT_ECSE_DIR ${PROJECT_SOURCE_DIR}/ecse)
+set(PROJECT_ECSE_SOURCES
+  "${PROJECT_ECSE_DIR}/Entity.cpp"
+)
+
+include_directories(${PROJECT_INCLUDE_DIR})
+
+add_custom_target(testing)
+add_executable(EntityTest ${PROJECT_TESTING_DIR}/EntityTests.cpp ${PROJECT_ECSE_SOURCES})
+add_dependencies(testing EntityTest)
