@@ -1,6 +1,8 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.1)
 
 project(ECS-E)
+
+set (CMAKE_CXX_STANDARD 11)
 
 set(PROJECT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 set(PROJECT_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
