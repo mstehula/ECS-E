@@ -13,16 +13,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_LIBRARY_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_LIBRARY_DIR})
 
-
 add_definitions(-g)
-
-set(PROJECT_ECSE_DIR ${PROJECT_SOURCE_DIR}/ecse)
-set(PROJECT_ECSE_SOURCES
-  "${PROJECT_ECSE_DIR}/Entity.cpp"
-)
 
 include_directories(${PROJECT_INCLUDE_DIR})
 
 add_custom_target(testing)
-add_executable(EntityTest ${PROJECT_TESTING_DIR}/EntityTests.cpp ${PROJECT_ECSE_SOURCES})
+add_executable(EntityTest ${PROJECT_TESTING_DIR}/EntityTests.cpp)
 add_dependencies(testing EntityTest)

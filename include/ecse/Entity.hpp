@@ -134,25 +134,61 @@ namespace ecse
     virtual ~EntityManager() {}
 
     /*
-     * Create()
+     * Creates a new Entity and registers it to a slot with a good version number
+     *
+     * The implementation uses a free list to fill spaces that were vacated from
+     *   prior versions
+     *
      * Args: None
-     * Returns: Newly created Entity
+     * Return: The newly created Entity
      */
-    Entity Create();
+    Entity Create()
+    {
+      uint32_t index, version;
+      if(free_list_.empty())
+      {
+        index = index_counter_++;
+        version = 1;
+        entity_version_.push_back(version);
+      }
+      else
+      {
+        index = free_list_.back();
+        free_list_.pop_back();
+        version = entity_version_.at(index);
+      }
+      Entity entity(this, Entity::Identifier(index, version));
+      return entity;
+    }
 
     /*
-     * Valid()
-     * Args: the Entity Id of the Entity to check
-     * Return: boolean weather the Entity is valid
+     * Checks validity of the Entity and returns a boolean.
+     *
+     * See also:
+     *    assert_valid()
+     *
+     * Args: Entity Id of the Entity to validate
+     * Return: Boolean weather it is valid or not
      */
-    bool Validate(Entity::Identifier id);
+    bool Validate(Entity::Identifier id)
+    {
+      return id.Index() < entity_version_.size() && entity_version_[id.Index()] == id.Version();
+    }
 
     /*
-     * Destroy()
-     * Args: the Entity Id of which to destroy
+     * Deletes the Entity provided
+     *
+     * Args: Entity Identifier of the Entity to be destroyed.
      * Return: None
      */
-    void Destroy(Entity::Identifier);
+    void Destroy(Entity::Identifier id)
+    {
+      assert_valid(id);
+      uint32_t index = id.Index();
+      entity_version_[index]++;
+      free_list_.push_back(index);
+      return;
+    }
 
     /*
      * Inline funtion to assert we are not using a stale Entity ID
