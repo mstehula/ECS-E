@@ -38,29 +38,29 @@ namespace ecse
     EventManager() = default;
     virtual ~EventManager()
     {
-      
+
     }
 
     template <typename L>
-    struct EventLink
+    class EventLink
     {
-      typedef void (L::_fptr)(void);
+      typedef void (L::*fptr)(void);
     public:
-      EventLink(L *object, _fptr function) : object_(object), fptr_(function_) {}
+      EventLink(L *object, fptr function) : object_(object), function_(function) {}
 
     private:
       L* object_;
-      _fptr function_;
+      fptr function_;
     };
 
-    template <typename E>
-    void subscribe(E event_type, L listener, fptr function)
+    template <typename E, typename L>
+    void subscribe(E event_type, L listener, void (L::*fptr)(void))
     {
 
     }
 
-    template <typename E>
-    void unsubscribe(E event_type, L listener, fptr function)
+    template <typename E, typename L>
+    void unsubscribe(E event_type, L listener, void (L::*fptr)(void))
     {
 
     }
@@ -72,7 +72,7 @@ namespace ecse
     }
 
   private:
-     unordered_map<BaseEvent::Identifier, Vector<EventLink>>  event_map_;
+     std::unordered_map<BaseEvent::Identifier, std::vector<EventLink<BaseEvent>>>  event_map_;
 
   };
 }
