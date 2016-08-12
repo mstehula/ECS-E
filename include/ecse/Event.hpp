@@ -2,65 +2,53 @@
 #define ECSE_EVENT_HPP
 
 #include <vector>
+#include <set>
+#include <functional>
 #include <unordered_map>
 
 namespace ecse
 {
 
+  typedef int Identifier;
+
   class EventManager;
 
-  class BaseEvent
-  {
-  public:
-    typedef uint32_t Identifier;
-
-    virtual ~BaseEvent() = default;
-  protected:
-    static Identifier id_counter_;
-  };
+  class BaseEvent {};
 
   template <typename E>
   class Event : BaseEvent
   {
-    /*
-     * Gets the Identifier value for the specific System template
-     */
-    static Identifier ID()
+    friend class EventManager;
+  };
+
+  template <typename E>
+  class EventSubscriberManager
+  {
+  public:
+    template <typename L>
+    void Subscribe(L* object, std::function<void()> fptr)
     {
-      static Identifier id = id_counter_++;
-      return id;
+
     }
+
+  private:
+    std::set<std::function<void()>> function_pointers_;
   };
 
   class EventManager
   {
   public:
     EventManager() = default;
-    virtual ~EventManager()
-    {
-
-    }
-
-    template <typename L>
-    class EventLink
-    {
-      typedef void (L::*fptr)(void);
-    public:
-      EventLink(L *object, fptr function) : object_(object), function_(function) {}
-
-    private:
-      L* object_;
-      fptr function_;
-    };
+    virtual ~EventManager() {}
 
     template <typename E, typename L>
-    void subscribe(E event_type, L listener, void (L::*fptr)(void))
+    void Subscribe(E event_type, L* listener, std::function<void()> fptr)
     {
 
     }
 
     template <typename E, typename L>
-    void unsubscribe(E event_type, L listener, void (L::*fptr)(void))
+    void unsubscribe(E event_type, L listener, std::function<void()> fptr)
     {
 
     }
@@ -72,8 +60,7 @@ namespace ecse
     }
 
   private:
-     std::unordered_map<BaseEvent::Identifier, std::vector<EventLink<BaseEvent>>>  event_map_;
-
+     std::unordered_map<Identifier, EventSubscriberManager<BaseEvent>>  event_map_;
   };
 }
 
