@@ -11,56 +11,48 @@ namespace ecse
 
   typedef int Identifier;
 
+  template <class E>
   class EventManager;
 
-  class BaseEvent {};
-
   template <typename E>
-  class Event : BaseEvent
+  class Event
   {
-    friend class EventManager;
   };
 
-  template <typename E>
-  class EventSubscriberManager
+  template <class E>
+  class EventSubscriptionManager
   {
   public:
-    template <typename L>
-    void Subscribe(L* object, std::function<void()> fptr)
+    void Subscribe(std::function<void(E)>  fptr)
     {
-
+      event_function_ = fptr;
     }
 
+    void Fire(E event)
+    {
+      event_function_(event);
+    }
   private:
-    std::set<std::function<void()>> function_pointers_;
+    std::function<void(E)> event_function_;
   };
 
+
+  template <class E>
   class EventManager
   {
   public:
-    EventManager() = default;
-    virtual ~EventManager() {}
-
-    template <typename E, typename L>
-    void Subscribe(E event_type, L* listener, std::function<void()> fptr)
+    void Subscribe(std::function<void(E)> fptr)
     {
-
+      sub_manager_.Subscribe(fptr);
     }
 
-    template <typename E, typename L>
-    void unsubscribe(E event_type, L listener, std::function<void()> fptr)
+    void Fire(E event)
     {
-
-    }
-
-    template <typename E>
-    void fire(E event)
-    {
-
+      sub_manager_.Fire(event);
     }
 
   private:
-     std::unordered_map<Identifier, EventSubscriberManager<BaseEvent>>  event_map_;
+    EventSubscriptionManager<E> sub_manager_;
   };
 }
 
