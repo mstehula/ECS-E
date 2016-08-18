@@ -4,7 +4,7 @@
 
 #include "ecse/Event.hpp"
 
-struct TestEvent : ecse::Event<TestEvent>
+struct TestEvent : public ecse::Event
 {
 
 };
@@ -22,11 +22,11 @@ public:
 
 int main()
 {
-  ecse::EventManager<TestEvent> event_manager;
+  ecse::EventManager event_manager;
   Listener listener_;
   TestEvent event;
 
-  event_manager.Subscribe(listener_.Callback);
+  event_manager.Subscribe<TestEvent>(listener_.Callback);
   printf("%s\n", "Callback registered!");
   event_manager.Fire(event);
   printf("%s\n", "Callback complete!");
