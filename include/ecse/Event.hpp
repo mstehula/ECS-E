@@ -4,6 +4,7 @@
 #include <memory>
 #include <functional>
 #include <unordered_map>
+#include <vector>
 
 namespace ecse
 {
@@ -17,15 +18,18 @@ namespace ecse
   public:
     void Subscribe(std::function<void(E)>  fptr)
     {
-      fptr_ = fptr;
+      fptrs_.push_back(fptr);
     }
 
     void Fire(E event)
     {
-      fptr_(event);
+      for(typename std::vector<std::function<void(E)>>::iterator it = fptrs_.begin(); it != fptrs_.end(); ++it)
+      {
+        (*it)(event);
+      }
     }
   private:
-    std::function<void(E)> fptr_;
+    std::vector<std::function<void(E)>> fptrs_;
   };
 
   class EventManager
