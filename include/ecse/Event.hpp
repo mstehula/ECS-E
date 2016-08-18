@@ -7,8 +7,6 @@
 
 namespace ecse
 {
-  class EventManager;
-
   struct Event {};
 
   class EventSubscriptionManagerBase {};
@@ -37,19 +35,19 @@ namespace ecse
     template <class E>
     void Subscribe(std::function<void(E)> fptr)
     {
-        std::shared_ptr<EventSubscriptionManager<E>> sub_manager_ptr;
-        auto sub_manager_it = sub_managers_.find(typeid(E).hash_code());
-        if(sub_manager_it == sub_managers_.end())
-        {
-            sub_manager_ptr = std::make_shared<EventSubscriptionManager<E>>();
-        }
-        else
-        {
-            sub_manager_ptr = std::static_pointer_cast<EventSubscriptionManager<E>>(sub_manager_it->second);
-        }
-        sub_manager_ptr->Subscribe(fptr);
-        sub_managers_.insert(std::pair<std::size_t, std::shared_ptr<EventSubscriptionManagerBase>>(typeid(E).hash_code(), sub_manager_ptr));
-        printf("Subscribed!\n");
+      std::shared_ptr<EventSubscriptionManager<E>> sub_manager_ptr;
+      auto sub_manager_it = sub_managers_.find(typeid(E).hash_code());
+      if(sub_manager_it == sub_managers_.end())
+      {
+          sub_manager_ptr = std::make_shared<EventSubscriptionManager<E>>();
+      }
+      else
+      {
+          sub_manager_ptr = std::static_pointer_cast<EventSubscriptionManager<E>>(sub_manager_it->second);
+      }
+      sub_manager_ptr->Subscribe(fptr);
+      sub_managers_.insert(std::pair<std::size_t, std::shared_ptr<EventSubscriptionManagerBase>>(typeid(E).hash_code(), sub_manager_ptr));
+      printf("Subscribed!\n");
     }
 
     template <class E>
