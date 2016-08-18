@@ -50,7 +50,7 @@ int main()
   printf("Test Event 1\n");
   event_manager.Subscribe<TestEvent1>(listener_.Callback1);
   event_manager.Fire(event1);
-  event_manager.Fire(event2);
+  event_manager.Fire((TestEvent1) event2);
 
   printf("Test Event 2\n");
   event_manager.Subscribe<TestEvent2>(listener_.Callback2);
